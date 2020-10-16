@@ -9,7 +9,6 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "discord.js": "^12.2.0",
-    "node-opus": "^0.3.3"
+    "discord.js": "^12.2.0"
   }
 }
