@@ -145,21 +145,21 @@ function rollDice(dices, cliche, message, TEAMmode, TEAMscore6s, DiceMode) {
 var allText = '';
 
 function sendMsgUnder2000(text, final, ch) {
-    if (allText.length + text.length >= 2000 || final) {
-        if (final) {
-            if (allText.length + text.length >= 2000) {
-                if (allText.length > 0)
+    try {
+        if (allText.length + text.length >= 2000 || final) {
+            if (final) {
+                if (allText.length + text.length >= 2000) {
                     ch.channel.send(allText);
-                allText = '';
+                    allText = '';
+                }
+                allText += text + '\n'
             }
-            allText += text + '\n'
-        }
-        if (allText.length > 0)
             ch.channel.send(allText);
-        console.log(allText);
-        allText = '';
-    }
-    if (!final) allText += text + '\n';
+            console.log(allText);
+            allText = '';
+        }
+        if (!final) allText += text + '\n';
+    } catch (e) {} finally {}
 }
 
 function DiceEmoji(num) {
