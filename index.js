@@ -7,7 +7,7 @@ client.once('ready', () => {
     client.user.setActivity('http://www.risusiverse-thai.com/risus-bot');
 });
 //! code is orignally made for single large server
-client.on('message', message => { 
+client.on('message', message => {
     let diceMode = 0;
     let rollcommmand = message.content;
     if (message.content.charAt(0) === '*') {
@@ -47,8 +47,8 @@ function rollall(message, TEAMmode, DiceMode) {
             if (cliche.length < 1) return;
             let dices = 0;
             let returnMsg;
-            if (((cliche.indexOf('(') < 0) && (cliche.indexOf('[') < 0) && (cliche.indexOf('<') < 0) && (cliche.indexOf('{') < 0))
-            && ((cliche.indexOf(')') < 0) && (cliche.indexOf(']') < 0) && (cliche.indexOf('>') < 0) && (cliche.indexOf('}')))) {
+            if (((cliche.indexOf('(') < 0) && (cliche.indexOf('[') < 0) && (cliche.indexOf('<') < 0) && (cliche.indexOf('{') < 0)) &&
+                ((cliche.indexOf(')') < 0) && (cliche.indexOf(']') < 0) && (cliche.indexOf('>') < 0) && (cliche.indexOf('}')))) {
                 /*dices = parseInt(cliche.split(' ')[0].split('+')[0].split('-')[0].replace(/[^0-9-]/g, ''));
                 returnMsg = rollDice(dices, cliche, message, TEAMmode, TEAMscore6s, DiceMode);
                 TEAMscore6s = returnMsg.TEAMscore6s;
@@ -153,7 +153,8 @@ function sendMsgUnder2000(text, final, ch) {
             }
             allText += text + '\n'
         }
-        ch.channel.send(allText);
+        if (allText.length > 0)
+            ch.channel.send(allText);
         console.log(allText);
         allText = '';
     }
