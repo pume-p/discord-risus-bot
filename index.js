@@ -148,7 +148,8 @@ function sendMsgUnder2000(text, final, ch) {
     if (allText.length + text.length >= 2000 || final) {
         if (final) {
             if (allText.length + text.length >= 2000) {
-                ch.channel.send(allText);
+                if (allText.length > 0)
+                    ch.channel.send(allText);
                 allText = '';
             }
             allText += text + '\n'
