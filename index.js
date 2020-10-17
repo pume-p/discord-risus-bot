@@ -4,7 +4,7 @@ client.login(process.env.token);
 
 client.once('ready', () => {
     console.log('Ready!\n---');
-    client.user.setActivity('http://www.risusiverse-thai.com/risus-bot');
+    client.user.setActivity('risusiverse-thai.com/risus-bot');
 });
 //! code is orignally made for single large server
 client.on('message', message => {
@@ -145,7 +145,6 @@ function rollDice(dices, cliche, message, TEAMmode, TEAMscore6s, DiceMode) {
 var allText = '';
 
 function sendMsgUnder2000(text, final, ch) {
-    try {
         if (allText.length + text.length >= 2000 || final) {
             if (final) {
                 if (allText.length + text.length >= 2000) {
@@ -159,7 +158,6 @@ function sendMsgUnder2000(text, final, ch) {
             allText = '';
         }
         if (!final) allText += text + '\n';
-    } catch (e) {} finally {}
 }
 
 function DiceEmoji(num) {
