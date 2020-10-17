@@ -44,7 +44,7 @@ function rollall(message, TEAMmode, DiceMode) {
     cliches.forEach(cliche => {
         try {
             if (rolled >= 15) return;
-            if (cliche.length < 1) return;
+            if (cliche.length < 3) return; // 1 -> 3 ''=1 '()'=3
             let dices = 0;
             let returnMsg;
             if (((cliche.indexOf('(') < 0) && (cliche.indexOf('[') < 0) && (cliche.indexOf('<') < 0) && (cliche.indexOf('{') < 0)) &&
