@@ -154,7 +154,7 @@ function rollDice(dices, cliche, message, TEAMmode, TEAMscore6s, DiceMode, brack
 var allText = '';
 
 function sendMsgUnder2000(text, final, ch) {
-    if (text.length === 0) return;
+    if (text.length === 0 && !final) return;
     if (allText.length + text.length >= 2000 || final) {
         if (final) {
             if (allText.length + text.length >= 2000) {
