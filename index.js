@@ -78,7 +78,7 @@ function rollall(message, TEAMmode, DiceMode) {
             rolled++;
         } catch (e) {} finally {}
     });
-    if(rolled === 0) return;
+    if (rolled === 0) return;
     let TEAMscore = '';
     if (TEAMmode && rolled > 1)
         if (DiceMode === 0)
@@ -88,7 +88,7 @@ function rollall(message, TEAMmode, DiceMode) {
     sendMsgUnder2000(TEAMscore, true, message);
 
     let guild = '';
-    if(message.channel.type !== "dm") guild = ` - ${message.channel.name} - ${message.guild.name} `;
+    if (message.channel.type !== "dm") guild = ` - ${message.channel.name} - ${message.guild.name} `;
     console.log(`${message.author.username}${guild}\n${message.content}\n\--`);
 }
 
@@ -154,6 +154,7 @@ function rollDice(dices, cliche, message, TEAMmode, TEAMscore6s, DiceMode, brack
 var allText = '';
 
 function sendMsgUnder2000(text, final, ch) {
+    if (text.length === 0) return;
     if (allText.length + text.length >= 2000 || final) {
         if (final) {
             if (allText.length + text.length >= 2000) {
