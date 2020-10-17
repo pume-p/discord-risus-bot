@@ -86,9 +86,9 @@ function rollall(message, TEAMmode, DiceMode) {
         else
             TEAMscore = `> ***TEAM= ${DiceEmoji(TEAMscore6s)}***`;
     sendMsgUnder2000(TEAMscore, true, message);
+    
     let guild = '';
     if(message.channel.type !== "dm") guild = `${message.channel.name} - ${message.guild.name} `;
-
     console.log(`${message.author.username} - ${guild}\n${message.content}\n\--`);
 }
 
