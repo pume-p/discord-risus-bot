@@ -6,7 +6,7 @@ client.once('ready', () => {
     console.log('Ready!\n---');
     client.user.setActivity('risusiverse-thai.com/risus-bot');
 });
-//! code is orignally made for single large server
+//! this code was orignally made for a single large server and is very very very old code 
 client.on('message', message => {
     let diceMode = 0;
     let rollcommmand = message.content;
@@ -69,7 +69,7 @@ function rollall(message, TEAMmode, DiceMode) {
                 else if (cliche.indexOf('}') > -1) bracket2 = '}';
             }
             dices = parseInt(cliche.split(bracket)[1].split(bracket2)[0].split('/')[0].split('+')[0].split('-')[0].replace(/[^0-9-]/g, ''));
-            returnMsg = rollDice(dices, cliche, message, TEAMmode, TEAMscore6s, DiceMode);
+            returnMsg = rollDice(dices, cliche, message, TEAMmode, TEAMscore6s, DiceMode, bracket2);
             TEAMscore6s = returnMsg.TEAMscore6s;
             sendMsgUnder2000(`> **${cliche.split(bracket2)[0]}${bracket2}: ${returnMsg.eachdice} :${returnMsg.result}**`, false, message);
             rolled++;
@@ -85,12 +85,14 @@ function rollall(message, TEAMmode, DiceMode) {
     console.log(`${message.member.displayName} - ${message.channel.name} - ${message.guild.name} \n${message.content}\n\n---`);
 }
 
-function rollDice(dices, cliche, message, TEAMmode, TEAMscore6s, DiceMode) {
+function rollDice(dices, cliche, message, TEAMmode, TEAMscore6s, DiceMode, bracket2) {
     if (isNaN(dices)) return;
-    if (cliche.indexOf('+') > -1)
+
+    if (cliche.split(bracket2)[1].indexOf('+') > -1)
         dices += parseInt(cliche.split('+')[1].replace(/[^0-9-]/g, ''));
-    else if (cliche.indexOf('-') > -1)
+    else if (cliche.split(bracket2)[1].indexOf('-') > -1)
         dices -= parseInt(cliche.split('-')[1].replace(/[^0-9-]/g, ''));
+
     if (dices > 30) {
         sendMsgUnder2000(`> *${cliche} - Could not roll more than 30 dices*`, false, message);
         return;
@@ -145,19 +147,19 @@ function rollDice(dices, cliche, message, TEAMmode, TEAMscore6s, DiceMode) {
 var allText = '';
 
 function sendMsgUnder2000(text, final, ch) {
-        if (allText.length + text.length >= 2000 || final) {
-            if (final) {
-                if (allText.length + text.length >= 2000) {
-                    ch.channel.send(allText);
-                    allText = '';
-                }
-                allText += text + '\n'
+    if (allText.length + text.length >= 2000 || final) {
+        if (final) {
+            if (allText.length + text.length >= 2000) {
+                ch.channel.send(allText);
+                allText = '';
             }
-            ch.channel.send(allText);
-            console.log(allText);
-            allText = '';
+            allText += text + '\n'
         }
-        if (!final) allText += text + '\n';
+        ch.channel.send(allText);
+        console.log(allText);
+        allText = '';
+    }
+    if (!final) allText += text + '\n';
 }
 
 function DiceEmoji(num) {
