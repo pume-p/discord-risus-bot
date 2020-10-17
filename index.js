@@ -228,23 +228,16 @@ function NumEmoji(num) {
     let id = '';
     switch (num) {
         case 2:
-            id = '2️⃣';
-            break;
+            return '2️⃣';
         case 3:
-            id = '3️⃣';
-            break;
+            return '3️⃣';
         case 4:
-            id = '4️⃣';
-            break;
+            return '4️⃣';
         case 5:
-            id = '5️⃣';
-            break;
+            return '5️⃣';
         case 6:
-            id = '6️⃣';
-            break;
+            return '6️⃣';
         default:
-            id = '1️⃣';
-            break;
+            return '1️⃣';
     }
-    return `<:g${num}:${id}>`;
 }
