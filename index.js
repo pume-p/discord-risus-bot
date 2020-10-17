@@ -84,7 +84,7 @@ function rollall(message, TEAMmode, DiceMode) {
         if (DiceMode === 0)
             TEAMscore = `> ***TEAM= ${TEAMscore6s}\\* =${TEAMscore6s * 6}***`;
         else
-            TEAMscore = `> ***TEAM= ${DiceEmoji(TEAMscore6s)}***`;
+            TEAMscore = `> ***TEAM= ${DiceEmoji(TEAMscore6s, message.guild.id)}***`;
     sendMsgUnder2000(TEAMscore, true, message);
 
     let guild = '';
@@ -113,9 +113,9 @@ function rollDice(dices, cliche, message, TEAMmode, TEAMscore6s, DiceMode, brack
     for (let i = 0; i < dices; i++) {
         let random = Math.floor(Math.random() * 6) + 1;
         if ((!TEAMmode || random === 6 || DiceMode === 1) && (DiceMode !== 2 || (random % 2) === 0)) //สีเทาเฉพาะถ้าเป็นทีมแล้วเลขไม่เป็น6 & mode^ไม่เป็นคู่
-            returnMsg.eachdice += DiceEmoji(random);
+            returnMsg.eachdice += DiceEmoji(random, message.guild.id);
         else
-            returnMsg.eachdice += GrayDiceEmoji(random);
+            returnMsg.eachdice += GrayDiceEmoji(random, message.guild.id);
 
         switch (DiceMode) {
             case 0:
@@ -138,7 +138,7 @@ function rollDice(dices, cliche, message, TEAMmode, TEAMscore6s, DiceMode, brack
             returnMsg.result = resultInt;
             break;
         case 1:
-            returnMsg.result = ' ' + DiceEmoji(resultInt);
+            returnMsg.result = ' ' + DiceEmoji(resultInt, message.guild.id);
             if (returnMsg.TEAMscore6s < resultInt)
                 returnMsg.TEAMscore6s = resultInt;
             break;
@@ -169,7 +169,8 @@ function sendMsgUnder2000(text, final, ch) {
     if (!final) allText += text + '\n';
 }
 
-function DiceEmoji(num) {
+function DiceEmoji(num, g) {
+    if (g !== '685745431107338271') return NumEmoji(num);
     let id = '';
     switch (num) {
         case 1:
@@ -197,7 +198,8 @@ function DiceEmoji(num) {
     return `<:d${num}:${id}>`;
 }
 
-function GrayDiceEmoji(num) {
+function GrayDiceEmoji(num, g) {
+    if (g !== '685745431107338271') return NumEmoji(num);
     let id = '';
     switch (num) {
         case 2:
@@ -217,6 +219,31 @@ function GrayDiceEmoji(num) {
             break;
         default:
             id = '760313638807404566';
+            break;
+    }
+    return `<:g${num}:${id}>`;
+}
+
+function NumEmoji(num) {
+    let id = '';
+    switch (num) {
+        case 2:
+            id = '2️⃣';
+            break;
+        case 3:
+            id = '3️⃣';
+            break;
+        case 4:
+            id = '4️⃣';
+            break;
+        case 5:
+            id = '5️⃣';
+            break;
+        case 6:
+            id = '6️⃣';
+            break;
+        default:
+            id = '1️⃣';
             break;
     }
     return `<:g${num}:${id}>`;
