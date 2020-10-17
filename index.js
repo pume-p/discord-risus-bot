@@ -8,6 +8,9 @@ client.once('ready', () => {
 });
 //! this code was orignally made for a single large server and is very very very old code 
 client.on('message', message => {
+    if (message.type !== 'DEFAULT') return;
+    if (message.author.bot) return;
+
     let diceMode = 0;
     let rollcommmand = message.content;
     if (message.content.charAt(0) === '*') {
@@ -83,7 +86,10 @@ function rollall(message, TEAMmode, DiceMode) {
         else
             TEAMscore = `> ***TEAM= ${DiceEmoji(TEAMscore6s)}***`;
     sendMsgUnder2000(TEAMscore, true, message);
-    console.log(`${message.member.displayName} - ${message.channel.name} - ${message.guild.name} \n${message.content}\n\--`);
+    let guild = '';
+    if(message.channel.type !== "dm") guild = `${message.channel.name} - ${message.guild.name} `;
+
+    console.log(`${message.author.username} - ${guild}\n${message.content}\n\--`);
 }
 
 function rollDice(dices, cliche, message, TEAMmode, TEAMscore6s, DiceMode, bracket2) {
