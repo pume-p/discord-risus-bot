@@ -44,7 +44,7 @@ function rollall(message, TEAMmode, DiceMode) {
     cliches.forEach(cliche => {
         try {
             if (rolled >= 15) return;
-            if (cliche.length < 3) return; // 1 -> 3 ''=1 '()'=3
+            if (cliche.length < 1) return; // 1 <- 3 ''=1 '()'=3
             let dices = 0;
             let returnMsg;
             if (((cliche.indexOf('(') < 0) && (cliche.indexOf('[') < 0) && (cliche.indexOf('<') < 0) && (cliche.indexOf('{') < 0)) &&
@@ -75,6 +75,7 @@ function rollall(message, TEAMmode, DiceMode) {
             rolled++;
         } catch (e) {} finally {}
     });
+    if(rolled === 0) return;
     let TEAMscore = '';
     if (TEAMmode && rolled > 1)
         if (DiceMode === 0)
@@ -82,7 +83,7 @@ function rollall(message, TEAMmode, DiceMode) {
         else
             TEAMscore = `> ***TEAM= ${DiceEmoji(TEAMscore6s)}***`;
     sendMsgUnder2000(TEAMscore, true, message);
-    console.log(`${message.member.displayName} - ${message.channel.name} - ${message.guild.name} \n${message.content}\n\n---`);
+    console.log(`${message.member.displayName} - ${message.channel.name} - ${message.guild.name} \n${message.content}\n\--`);
 }
 
 function rollDice(dices, cliche, message, TEAMmode, TEAMscore6s, DiceMode, bracket2) {
