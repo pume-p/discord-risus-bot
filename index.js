@@ -25,7 +25,7 @@ client.on('message', message => {
         rollall(message, false, diceMode);
     else if (rollcommmand.charAt(0) === '$' && diceMode !== 2)
         rollall(message, true, diceMode);
-    else if (message.content.charAt(0) === '%') {
+    else if (message.content.startsWith('%$')) {
         let total = 0,
             s = message.content.match(/[+\-]*(\.\d+|\d+(\.\d+)?)/g) || [];
         while (s.length) {
@@ -154,7 +154,6 @@ function rollDice(dices, cliche, message, TEAMmode, TEAMscore6s, DiceMode, brack
 var allText = '';
 
 function sendMsgUnder2000(text, final, ch) {
-    if (text.length === 0 && !final) return;
     if (allText.length + text.length >= 2000 || final) {
         if (final) {
             if (allText.length + text.length >= 2000) {
