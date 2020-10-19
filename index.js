@@ -74,7 +74,10 @@ function rollall(message, TEAMmode, DiceMode) {
             dices = parseInt(cliche.split(bracket)[1].split(bracket2)[0].split('/')[0].split('+')[0].split('-')[0].replace(/[^0-9-]/g, ''));
             returnMsg = rollDice(dices, cliche, message, TEAMmode, TEAMscore6s, DiceMode, bracket2);
             TEAMscore6s = returnMsg.TEAMscore6s;
-            sendMsgUnder2000(`> **${cliche.split(bracket2)[0]}${bracket2}: ${returnMsg.eachdice} :${returnMsg.result}**`, false, message);
+            if (message.guild.id === '685745431107338271')
+                sendMsgUnder2000(`> **${cliche.split(bracket2)[0]}${bracket2}: ${returnMsg.eachdice} :${returnMsg.result}**`, false, message);
+            else
+                sendMsgUnder2000(`> **${cliche.split(bracket2)[0]}${bracket2}:  ${returnMsg.eachdice} :${returnMsg.result}**`, false, message);
             rolled++;
         } catch (e) {} finally {}
     });
@@ -225,19 +228,18 @@ function GrayDiceEmoji(num, g) {
 }
 
 function NumEmoji(num) {
-    let id = '';
     switch (num) {
         case 2:
-            return '2️⃣';
+            return '2️⃣ ';
         case 3:
-            return '3️⃣';
+            return '3️⃣ ';
         case 4:
-            return '4️⃣';
+            return '4️⃣ ';
         case 5:
-            return '5️⃣';
+            return '5️⃣ ';
         case 6:
-            return '6️⃣';
+            return '6️⃣ ';
         default:
-            return '1️⃣';
+            return '1️⃣ ';
     }
 }
