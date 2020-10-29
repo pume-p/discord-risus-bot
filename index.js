@@ -8,6 +8,7 @@ client.once('ready', () => {
 });
 //! this code was orignally made for a single large server and is very very very old code 
 client.on('message', message => {
+    console.log(message.type);
     if (message.type !== 'DEFAULT') return;
     if (message.author.bot) return;
 
