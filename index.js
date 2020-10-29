@@ -44,6 +44,14 @@ function rollall(message, TEAMmode, DiceMode) {
     else cliches[0] = cliches[0].slice(1);
     let TEAMscore6s = 0;
     let rolled = 0;
+
+    let guild = '';
+    let guil_id = '';
+    if (message.channel.type !== "dm") {
+        guild = ` - ${message.channel.name} - ${message.guild.name} `;
+        guil_id = message.guild.id
+    }
+    
     cliches.forEach(cliche => {
         try {
             if (rolled >= 15) return;
@@ -53,7 +61,7 @@ function rollall(message, TEAMmode, DiceMode) {
             if (((cliche.indexOf('(') < 0) && (cliche.indexOf('[') < 0) && (cliche.indexOf('<') < 0) && (cliche.indexOf('{') < 0)) &&
                 ((cliche.indexOf(')') < 0) && (cliche.indexOf(']') < 0) && (cliche.indexOf('>') < 0) && (cliche.indexOf('}')))) {
                 /*dices = parseInt(cliche.split(' ')[0].split('+')[0].split('-')[0].replace(/[^0-9-]/g, ''));
-                returnMsg = rollDice(dices, cliche, message, TEAMmode, TEAMscore6s, DiceMode);
+                returnMsg = rollDice(dices, cliche, message, TEAMmode, TEAMscore6s, DiceMode, guil_id);
                 TEAMscore6s = returnMsg.TEAMscore6s;
                 sendMsgUnder2000(`> **${returnMsg.eachdice} :${returnMsg.result}**`, false, message);
                 rolled++;*/
@@ -72,12 +80,8 @@ function rollall(message, TEAMmode, DiceMode) {
                 else if (cliche.indexOf('}') > -1) bracket2 = '}';
             }
             dices = parseInt(cliche.split(bracket)[1].split(bracket2)[0].split('/')[0].split('+')[0].split('-')[0].replace(/[^0-9-]/g, ''));
-            returnMsg = rollDice(dices, cliche, message, TEAMmode, TEAMscore6s, DiceMode, bracket2);
+            returnMsg = rollDice(dices, cliche, message, TEAMmode, TEAMscore6s, DiceMode, bracket2, guil_id);
             TEAMscore6s = returnMsg.TEAMscore6s;
-            let guil_id = '';
-            if (message.channel.type !== "dm") {
-                guil_id = message.guild.id
-            }
             if (guil_id === '685745431107338271')
                 sendMsgUnder2000(`> **${cliche.split(bracket2)[0]}${bracket2}: ${returnMsg.eachdice} :${returnMsg.result}**`, false, message);
             else
@@ -86,13 +90,6 @@ function rollall(message, TEAMmode, DiceMode) {
         } catch (e) {} finally {}
     });
     if (rolled === 0) return;
-
-    let guild = '';
-    let guil_id = '';
-    if (message.channel.type !== "dm") {
-        guild = ` - ${message.channel.name} - ${message.guild.name} `;
-        guil_id = message.guild.id
-    }
 
     let TEAMscore = '';
     if (TEAMmode && rolled > 1)
@@ -105,7 +102,7 @@ function rollall(message, TEAMmode, DiceMode) {
     console.log(`${message.author.username}${guild}\n${message.content}\n\--`);
 }
 
-function rollDice(dices, cliche, message, TEAMmode, TEAMscore6s, DiceMode, bracket2) {
+function rollDice(dices, cliche, message, TEAMmode, TEAMscore6s, DiceMode, bracket2, guil_id) {
     if (isNaN(dices)) return;
 
     if (cliche.split(bracket2)[1].indexOf('+') > -1)
@@ -126,9 +123,9 @@ function rollDice(dices, cliche, message, TEAMmode, TEAMscore6s, DiceMode, brack
     for (let i = 0; i < dices; i++) {
         let random = Math.floor(Math.random() * 6) + 1;
         if ((!TEAMmode || random === 6 || DiceMode === 1) && (DiceMode !== 2 || (random % 2) === 0)) //สีเทาเฉพาะถ้าเป็นทีมแล้วเลขไม่เป็น6 & mode^ไม่เป็นคู่
-            returnMsg.eachdice += DiceEmoji(random, message.guild.id);
+            returnMsg.eachdice += DiceEmoji(random, guil_id);
         else
-            returnMsg.eachdice += GrayDiceEmoji(random, message.guild.id);
+            returnMsg.eachdice += GrayDiceEmoji(random, guil_id);
 
         switch (DiceMode) {
             case 0:
@@ -151,7 +148,7 @@ function rollDice(dices, cliche, message, TEAMmode, TEAMscore6s, DiceMode, brack
             returnMsg.result = resultInt;
             break;
         case 1:
-            returnMsg.result = ' ' + DiceEmoji(resultInt, message.guild.id);
+            returnMsg.result = ' ' + DiceEmoji(resultInt, guil_id);
             if (returnMsg.TEAMscore6s < resultInt)
                 returnMsg.TEAMscore6s = resultInt;
             break;
