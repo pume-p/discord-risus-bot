@@ -38,7 +38,6 @@ client.on('message', message => {
 //DICE CONTROL
 
 function rollall(message, TEAMmode, DiceMode) {
-    console.log('GGGG')
     let cliches = message.content.split('\n');
     if (DiceMode !== 0)
         cliches[0] = cliches[0].slice(2);
@@ -81,18 +80,24 @@ function rollall(message, TEAMmode, DiceMode) {
                 sendMsgUnder2000(`> **${cliche.split(bracket2)[0]}${bracket2}:  ${returnMsg.eachdice} :${returnMsg.result}**`, false, message);
             rolled++;
         } catch (e) {} finally {}
-    });console.log('GGGGG')
+    });
     if (rolled === 0) return;
+
+    let guild = '';
+    let guil_id = '';
+    if (message.channel.type !== "dm") {
+        guild = ` - ${message.channel.name} - ${message.guild.name} `;
+        guil_id = message.guild.id
+    }
+
     let TEAMscore = '';
     if (TEAMmode && rolled > 1)
         if (DiceMode === 0)
             TEAMscore = `> ***TEAM= ${TEAMscore6s}\\* =${TEAMscore6s * 6}***`;
         else
-            TEAMscore = `> ***TEAM= ${DiceEmoji(TEAMscore6s, message.guild.id)}***`;
+            TEAMscore = `> ***TEAM= ${DiceEmoji(TEAMscore6s, guil_id)}***`;
     sendMsgUnder2000(TEAMscore, true, message);
 
-    let guild = '';
-    if (message.channel.type !== "dm") guild = ` - ${message.channel.name} - ${message.guild.name} `;
     console.log(`${message.author.username}${guild}\n${message.content}\n\--`);
 }
 
@@ -158,7 +163,6 @@ function rollDice(dices, cliche, message, TEAMmode, TEAMscore6s, DiceMode, brack
 var allText = '';
 
 function sendMsgUnder2000(text, final, ch) {
-    console.log('GGG')
     if (allText.length + text.length >= 2000 || final) {
         if (final) {
             if (allText.length + text.length >= 2000) {
