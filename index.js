@@ -90,7 +90,10 @@ function rollall(message, TEAMmode, DiceMode) {
         } catch (e) {} finally {}
     });
     if (rolled === 0 && allText === '') return;
-    else if (rolled === 0) sendMsgUnder2000('', true, message);
+    else if (rolled === 0) {
+        sendMsgUnder2000('', true, message);
+        return;
+    }
 
     let TEAMscore = '';
     if (TEAMmode && rolled > 1)
