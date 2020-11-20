@@ -51,7 +51,7 @@ function rollall(message, TEAMmode, DiceMode) {
         guild = ` - ${message.channel.name} - ${message.guild.name} `;
         guil_id = message.guild.id
     }
-    
+
     cliches.forEach(cliche => {
         try {
             if (rolled >= 15) return;
@@ -89,7 +89,8 @@ function rollall(message, TEAMmode, DiceMode) {
             rolled++;
         } catch (e) {} finally {}
     });
-    if (rolled === 0) return;
+    if (rolled === 0 && allText === '') return;
+    else if (rolled === 0) sendMsgUnder2000('', true, message);
 
     let TEAMscore = '';
     if (TEAMmode && rolled > 1)
