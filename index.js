@@ -184,7 +184,7 @@ function sendMsgUnder2000(text, final, ch) {
 }
 
 function DiceEmoji(num, g) {
-    if (g !== '685745431107338271') return NumEmoji(num);
+    //if (g !== '685745431107338271') return NumEmoji(num);
     let id = '';
     switch (num) {
         case 1:
@@ -213,7 +213,7 @@ function DiceEmoji(num, g) {
 }
 
 function GrayDiceEmoji(num, g) {
-    if (g !== '685745431107338271') return NumEmoji(num);
+    //if (g !== '685745431107338271') return NumEmoji(num);
     let id = '';
     switch (num) {
         case 2:
