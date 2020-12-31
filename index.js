@@ -25,7 +25,7 @@ client.on('message', message => {
         rollall(message, false, diceMode);
     else if (rollcommmand.charAt(0) === '$' && diceMode !== 2)
         rollall(message, true, diceMode);
-    else if (message.content.startsWith('%$')) {
+    else if (message.content.startsWith('%')) {
         let total = 0,
             s = message.content.match(/[+\-]*(\.\d+|\d+(\.\d+)?)/g) || [];
         while (s.length) {
