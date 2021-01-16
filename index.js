@@ -109,10 +109,16 @@ function rollall(message, TEAMmode, DiceMode) {
 function rollDice(dices, cliche, message, TEAMmode, TEAMscore6s, DiceMode, bracket2, guil_id) {
     if (isNaN(dices)) return;
 
-    if (cliche.split(bracket2)[1].indexOf('+') > -1)
+    let total = 0,
+        s = cliche.split(bracket2)[1].match(/[+\-]*(\.\d+|\d+(\.\d+)?)/g) || [];
+    while (s.length) {
+        total += parseFloat(s.shift());
+    }
+    dices += total;
+    /*if (cliche.split(bracket2)[1].indexOf('+') > -1)
         dices += parseInt(cliche.split('+')[1].replace(/[^0-9-]/g, ''));
     else if (cliche.split(bracket2)[1].indexOf('-') > -1)
-        dices -= parseInt(cliche.split('-')[1].replace(/[^0-9-]/g, ''));
+        dices -= parseInt(cliche.split('-')[1].replace(/[^0-9-]/g, ''));*/
 
     if (dices > 30) {
         sendMsgUnder2000(`> *${cliche} - Could not roll more than 30 dices*`, false, message);
