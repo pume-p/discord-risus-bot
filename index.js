@@ -11,7 +11,7 @@ client.on('message', message => {
     if (message.type !== 'DEFAULT') return;
     if (message.author.bot) return;
 
-    let emoji = false;
+    let emoji = true//false;
     if (message.guild.me.hasPermission('USE_EXTERNAL_EMOJIS'))
         emoji = true;
 
