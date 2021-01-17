@@ -79,7 +79,11 @@ function rollall(message, TEAMmode, DiceMode) {
                 else if (cliche.indexOf('>') > -1) bracket2 = '>';
                 else if (cliche.indexOf('}') > -1) bracket2 = '}';
             }
-            dices = parseInt(cliche.split(bracket)[1].split(bracket2)[0].split('/')[0].split('+')[0].split('-')[0].replace(/[^0-9-]/g, ''));
+
+            if (diceMode === 2)
+                dices = parseInt(cliche.split(bracket)[1].split(bracket2)[0].split('/')[1].replace(/[^0-9-]/g, '')); //.split('+')[0].split('-')[0]
+            else
+                dices = parseInt(cliche.split(bracket)[1].split(bracket2)[0].split('/')[0].replace(/[^0-9-]/g, '')); //.split('+')[0].split('-')[0]
             returnMsg = rollDice(dices, cliche, message, TEAMmode, TEAMscore6s, DiceMode, bracket2, guil_id);
             TEAMscore6s = returnMsg.TEAMscore6s;
             if (guil_id === '685745431107338271')
@@ -109,12 +113,14 @@ function rollall(message, TEAMmode, DiceMode) {
 function rollDice(dices, cliche, message, TEAMmode, TEAMscore6s, DiceMode, bracket2, guil_id) {
     if (isNaN(dices)) return;
 
-    let total = 0,
-        s = cliche.split(bracket2)[1].match(/[+\-]*(\.\d+|\d+(\.\d+)?)/g) || [];
-    while (s.length) {
-        total += parseFloat(s.shift());
+    if (diceMode !== 2) {
+        let total = 0,
+            s = cliche.split(bracket2)[1].match(/[+\-]*(\.\d+|\d+(\.\d+)?)/g) || [];
+        while (s.length) {
+            total += parseFloat(s.shift());
+        }
+        dices += total;
     }
-    dices += total;
     /*if (cliche.split(bracket2)[1].indexOf('+') > -1)
         dices += parseInt(cliche.split('+')[1].replace(/[^0-9-]/g, ''));
     else if (cliche.split(bracket2)[1].indexOf('-') > -1)
