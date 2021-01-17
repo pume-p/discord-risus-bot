@@ -11,6 +11,10 @@ client.on('message', message => {
     if (message.type !== 'DEFAULT') return;
     if (message.author.bot) return;
 
+    let emoji = false;
+    if (message.guild.me.hasPermission('USE_EXTERNAL_EMOJIS'))
+        emoji = true;
+
     let diceMode = 0;
     let rollcommmand = message.content;
     if (message.content.charAt(0) === '*') {
@@ -22,9 +26,9 @@ client.on('message', message => {
     }
 
     if (rollcommmand.charAt(0) === '!')
-        rollall(message, false, diceMode);
+        rollall(message, false, diceMode, emoji);
     else if (rollcommmand.charAt(0) === '$' && diceMode !== 2)
-        rollall(message, true, diceMode);
+        rollall(message, true, diceMode, emoji);
     else if (message.content.startsWith('%')) {
         let total = 0,
             s = message.content.match(/[+\-]*(\.\d+|\d+(\.\d+)?)/g) || [];
@@ -37,7 +41,7 @@ client.on('message', message => {
 
 //DICE CONTROL
 
-function rollall(message, TEAMmode, DiceMode) {
+function rollall(message, TEAMmode, DiceMode, emoji) {
     let cliches = message.content.split('\n');
     if (DiceMode !== 0)
         cliches[0] = cliches[0].slice(2);
@@ -84,9 +88,9 @@ function rollall(message, TEAMmode, DiceMode) {
                 dices = parseInt(cliche.split(bracket)[1].split(bracket2)[0].split('/')[1].replace(/[^0-9-]/g, '')); //.split('+')[0].split('-')[0]
             else
                 dices = parseInt(cliche.split(bracket)[1].split(bracket2)[0].split('/')[0].replace(/[^0-9-]/g, '')); //.split('+')[0].split('-')[0]
-            returnMsg = rollDice(dices, cliche, message, TEAMmode, TEAMscore6s, DiceMode, bracket2, guil_id);
+            returnMsg = rollDice(dices, cliche, message, TEAMmode, TEAMscore6s, DiceMode, bracket2, emoji);
             TEAMscore6s = returnMsg.TEAMscore6s;
-            if (guil_id === '685745431107338271')
+            if (emoji)
                 sendMsgUnder2000(`> **${cliche.split(bracket2)[0]}${bracket2}: ${returnMsg.eachdice} :${returnMsg.result}**`, false, message);
             else
                 sendMsgUnder2000(`> **${cliche.split(bracket2)[0]}${bracket2}:  ${returnMsg.eachdice} :${returnMsg.result}**`, false, message);
@@ -110,7 +114,7 @@ function rollall(message, TEAMmode, DiceMode) {
     console.log(`${message.author.username}${guild}\n${message.content}\n\--`);
 }
 
-function rollDice(dices, cliche, message, TEAMmode, TEAMscore6s, DiceMode, bracket2, guil_id) {
+function rollDice(dices, cliche, message, TEAMmode, TEAMscore6s, DiceMode, bracket2, emoji) {
     if (isNaN(dices)) return;
 
     if (DiceMode !== 2) {
@@ -139,9 +143,9 @@ function rollDice(dices, cliche, message, TEAMmode, TEAMscore6s, DiceMode, brack
     for (let i = 0; i < dices; i++) {
         let random = Math.floor(Math.random() * 6) + 1;
         if ((!TEAMmode || random === 6 || DiceMode === 1) && (DiceMode !== 2 || (random % 2) === 0)) //สีเทาเฉพาะถ้าเป็นทีมแล้วเลขไม่เป็น6 & mode^ไม่เป็นคู่
-            returnMsg.eachdice += DiceEmoji(random, guil_id);
+            returnMsg.eachdice += DiceEmoji(random, emoji);
         else
-            returnMsg.eachdice += GrayDiceEmoji(random, guil_id);
+            returnMsg.eachdice += GrayDiceEmoji(random, emoji);
 
         switch (DiceMode) {
             case 0:
@@ -164,7 +168,7 @@ function rollDice(dices, cliche, message, TEAMmode, TEAMscore6s, DiceMode, brack
             returnMsg.result = resultInt;
             break;
         case 1:
-            returnMsg.result = ' ' + DiceEmoji(resultInt, guil_id);
+            returnMsg.result = ' ' + DiceEmoji(resultInt, emoji);
             if (returnMsg.TEAMscore6s < resultInt)
                 returnMsg.TEAMscore6s = resultInt;
             break;
@@ -195,8 +199,8 @@ function sendMsgUnder2000(text, final, ch) {
     if (!final) allText += text + '\n';
 }
 
-function DiceEmoji(num, g) {
-    if (g !== '685745431107338271') return NumEmoji(num);
+function DiceEmoji(num, emoji) {
+    if (!emoji) return NumEmoji(num);
     let id = '';
     switch (num) {
         case 1:
@@ -224,8 +228,8 @@ function DiceEmoji(num, g) {
     return `<:d${num}:${id}>`;
 }
 
-function GrayDiceEmoji(num, g) {
-    if (g !== '685745431107338271') return NumEmoji(num);
+function GrayDiceEmoji(num, emoji) {
+    if (!emoji) return NumEmoji(num);
     let id = '';
     switch (num) {
         case 2:
