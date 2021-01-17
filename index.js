@@ -5,9 +5,7 @@ client.login(process.env.token);
 client.once('ready', () => {
     console.log('Ready!\n---');
     client.user.setActivity('risusiverse-thai.com/risus-bot');
-
-    console.log(client.guilds.cache.get('716807791574253599').channels.cache.get('716815120663183390'));
-    console.log(client.guilds.cache.get('579966180681580544').channels.cache.get('685473228533137410'));
+    console.log(client.guilds.cache.get('579966180681580544').channels.cache.get('789148404924153856'));
 });
 //! this code was orignally made for a single large server and is very very very old code 
 client.on('message', message => {
