@@ -12,7 +12,7 @@ client.on('message', message => {
     if (message.author.bot) return;
 
     let emoji = false;
-    if (message.guild.me.hasPermission('USE_EXTERNAL_EMOJIS'))
+    if (message.channel.type === "dm" || message.guild.me.hasPermission('USE_EXTERNAL_EMOJIS'))
         emoji = true;
 
     let diceMode = 0;
