@@ -5,7 +5,6 @@ client.login(process.env.token);
 client.once('ready', () => {
     console.log('Ready!\n---');
     client.user.setActivity('risusiverse-thai.com/risus-bot');
-    console.log(client.guilds.cache.get('685745431107338271').channels.cache.get('685761491760447518').permissionOverwrites);
 });
 //! this code was orignally made for a single large server and is very very very old code 
 client.on('message', message => {
