@@ -92,9 +92,9 @@ function rollall(message, TEAMmode, DiceMode, emoji) {
             returnMsg = rollDice(dices, cliche, message, TEAMmode, TEAMscore6s, DiceMode, bracket2, emoji);
             TEAMscore6s = returnMsg.TEAMscore6s;
             if (emoji)
-                sendMsgUnder2000(`> **${cliche.split(bracket2)[0]}${bracket2}: ${returnMsg.eachdice} :${returnMsg.result}**`, false, message);
+                sendMsgUnder2000(`> **${cliche}: ${returnMsg.eachdice} :${returnMsg.result}**`, false, message); //.split(bracket2)[0]}${bracket2
             else
-                sendMsgUnder2000(`> **${cliche.split(bracket2)[0]}${bracket2}:  ${returnMsg.eachdice} :${returnMsg.result}**`, false, message);
+                sendMsgUnder2000(`> **${cliche}:  ${returnMsg.eachdice} :${returnMsg.result}**`, false, message); //.split(bracket2)[0]}${bracket2
             rolled++;
         } catch (e) {} finally {}
     });
