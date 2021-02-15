@@ -15,11 +15,22 @@ client.on('message', message => {
     if (message.channel.type === "dm" || message.guild.me.hasPermission('USE_EXTERNAL_EMOJIS'))
         emoji = true;
 
+    let diceLIMIT = 0;
+
+
     let diceMode = 0;
     let rollcommmand = message.content;
     if (message.content.charAt(0) === '*') {
-        diceMode = 1;
-        rollcommmand = rollcommmand.slice(1);
+        if (message.content.charAt(1) === '!' || rollcommmand.charAt(1) === '$') {
+            diceMode = 1;
+            rollcommmand = rollcommmand.slice(1);
+        } else {
+            try {
+                diceLIMIT = parseInt(message.content.slice(1).split('!')[0]);
+                diceMode = 3;
+                rollcommmand = rollcommmand.split('!')[1];
+            } catch (e) {} finally {}
+        }
     } else if (message.content.charAt(0) === '^') {
         diceMode = 2;
         rollcommmand = rollcommmand.slice(1);
