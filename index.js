@@ -164,6 +164,10 @@ function rollDice(dices, cliche, message, TEAMmode, TEAMscore6s, DiceMode, brack
     for (let i = 0; i < dices; i++) {
         randomSequence[i] = Math.floor(Math.random() * 6) + 1;
     }
+    if (DiceMode === 3) randomSequence.sort(function (a, b) {
+        return b - a
+    });
+
     for (let i = 0; i < dices; i++) {
         if ((!TEAMmode || randomSequence[i] === 6 || DiceMode === 1) && (DiceMode !== 2 || (randomSequence[i] % 2) === 0)) //สีเทาเฉพาะถ้าเป็นทีมแล้วเลขไม่เป็น6 & mode^ไม่เป็นคู่
             returnMsg.eachdice += DiceEmoji(randomSequence[i], emoji);
