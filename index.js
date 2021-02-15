@@ -28,7 +28,7 @@ client.on('message', message => {
             try {
                 diceLIMIT = parseInt(message.content.slice(1).split('!')[0]);
                 if (message.content.charAt(2) === '!' || message.content.charAt(3) === '!') {
-                    diceMode = 0;
+                    diceMode = 3;
                     rollcommmand = '!';
                 } else if (message.content.charAt(2) === '$' || message.content.charAt(3) === '$') {
                     diceMode = 0;
