@@ -59,9 +59,12 @@ client.on('message', message => {
 
 function rollall(message, TEAMmode, DiceMode, emoji) {
     let cliches = message.content.split('\n');
-    if (DiceMode !== 0)
-        cliches[0] = cliches[0].slice(2);
-    else cliches[0] = cliches[0].slice(1);
+
+    if (TEAMmode)
+        cliches[0] = cliches[0].split('$')[1];
+    else
+        cliches[0] = cliches[0].split('!')[1];
+
     let TEAMscore6s = 0;
     let rolled = 0;
 
