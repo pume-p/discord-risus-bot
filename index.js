@@ -187,7 +187,7 @@ function rollDice(dices, cliche, message, TEAMmode, TEAMscore6s, DiceMode, brack
                 } else returnMsg.eachdice += GrayDiceEmoji(randomSequence[i], emoji);
                 break;
             case 1:
-                if (i === highestDnum)
+                if (i === highestDnum || true)
                     returnMsg.eachdice += DiceEmoji(randomSequence[i], emoji);
                 else
                     returnMsg.eachdice += GrayDiceEmoji(randomSequence[i], emoji);
