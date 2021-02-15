@@ -159,26 +159,30 @@ function rollDice(dices, cliche, message, TEAMmode, TEAMscore6s, DiceMode, brack
         result: '',
         TEAMscore6s: TEAMscore6s,
     }
+
+    let randomSequence = new Array(dices);
     for (let i = 0; i < dices; i++) {
-        let random = Math.floor(Math.random() * 6) + 1;
-        if ((!TEAMmode || random === 6 || DiceMode === 1) && (DiceMode !== 2 || (random % 2) === 0)) //สีเทาเฉพาะถ้าเป็นทีมแล้วเลขไม่เป็น6 & mode^ไม่เป็นคู่
-            returnMsg.eachdice += DiceEmoji(random, emoji);
+        randomSequence[i] = Math.floor(Math.random() * 6) + 1;
+    }
+    for (let i = 0; i < dices; i++) {
+        if ((!TEAMmode || randomSequence[i] === 6 || DiceMode === 1) && (DiceMode !== 2 || (randomSequence[i] % 2) === 0)) //สีเทาเฉพาะถ้าเป็นทีมแล้วเลขไม่เป็น6 & mode^ไม่เป็นคู่
+            returnMsg.eachdice += DiceEmoji(randomSequence[i], emoji);
         else
-            returnMsg.eachdice += GrayDiceEmoji(random, emoji);
+            returnMsg.eachdice += GrayDiceEmoji(randomSequence[i], emoji);
 
         switch (DiceMode) {
             case 0:
                 if (TEAMmode)
-                    if (random === 6) returnMsg.TEAMscore6s++;
-                    else random = 0;
-                resultInt += random;
+                    if (randomSequence[i] === 6) returnMsg.TEAMscore6s++;
+                    else randomSequence[i] = 0;
+                resultInt += randomSequence[i];
                 break;
             case 1:
-                if (resultInt < random)
-                    resultInt = random;
+                if (resultInt < randomSequence[i])
+                    resultInt = randomSequence[i];
                 break;
             case 2:
-                if ((random % 2) !== 0)
+                if ((randomSequence[i] % 2) !== 0)
                     resultInt = 1;
         }
     }
