@@ -153,6 +153,9 @@ function rollDice(dices, cliche, message, TEAMmode, TEAMscore6s, DiceMode, brack
         sendMsgUnder2000(`> *${cliche} - Could not roll more than 30 dices*`, false, message);
         return;
     }
+
+    let highestDnum = 0;
+
     let resultInt = 0;
     let returnMsg = {
         eachdice: '',
@@ -163,6 +166,11 @@ function rollDice(dices, cliche, message, TEAMmode, TEAMscore6s, DiceMode, brack
     let randomSequence = new Array(dices);
     for (let i = 0; i < dices; i++) {
         randomSequence[i] = Math.floor(Math.random() * 6) + 1;
+
+        if (DiceMode === 1 && resultInt < randomSequence[i]) {
+            resultInt = randomSequence[i];
+            highestDnum = i;
+        }
     }
     if (DiceMode === 3) randomSequence.sort(function (a, b) {
         return b - a
@@ -170,17 +178,25 @@ function rollDice(dices, cliche, message, TEAMmode, TEAMscore6s, DiceMode, brack
 
     clicheLIMIT = diceLIMIT;
     for (let i = 0; i < dices; i++) {
-        if (DiceMode !== 3)
-            if ((!TEAMmode || randomSequence[i] === 6 || DiceMode === 1) && (DiceMode !== 2 || (randomSequence[i] % 2) === 0)) //สีเทาเฉพาะถ้าเป็นทีมแล้วเลขไม่เป็น6 & mode^ไม่เป็นคู่
-                returnMsg.eachdice += DiceEmoji(randomSequence[i], emoji);
-            else
-                returnMsg.eachdice += GrayDiceEmoji(randomSequence[i], emoji);
-        else {
-            if (clicheLIMIT > 0) {
-                returnMsg.eachdice += DiceEmoji(randomSequence[i], emoji);
-                clicheLIMIT--;
-                resultInt += randomSequence[i];
-            } else returnMsg.eachdice += GrayDiceEmoji(randomSequence[i], emoji);
+        switch (DiceMode) {
+            case 3:
+                if (clicheLIMIT > 0) {
+                    returnMsg.eachdice += DiceEmoji(randomSequence[i], emoji);
+                    clicheLIMIT--;
+                    resultInt += randomSequence[i];
+                } else returnMsg.eachdice += GrayDiceEmoji(randomSequence[i], emoji);
+                break;
+            case 1:
+                if (i === highestDnum)
+                    returnMsg.eachdice += DiceEmoji(randomSequence[i], emoji);
+                else
+                    returnMsg.eachdice += GrayDiceEmoji(randomSequence[i], emoji);
+                break;
+            default:
+                if ((!TEAMmode || randomSequence[i] === 6 || DiceMode === 1) && (DiceMode !== 2 || (randomSequence[i] % 2) === 0)) //สีเทาเฉพาะถ้าเป็นทีมแล้วเลขไม่เป็น6 & mode^ไม่เป็นคู่
+                    returnMsg.eachdice += DiceEmoji(randomSequence[i], emoji);
+                else
+                    returnMsg.eachdice += GrayDiceEmoji(randomSequence[i], emoji);
         }
 
         switch (DiceMode) {
