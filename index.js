@@ -7,6 +7,9 @@ client.once('ready', () => {
     client.user.setActivity('risusiverse-thai.com/risus-bot');
 });
 //! this code was orignally made for a single large server and is very very very old code 
+
+var diceLIMIT = 0;
+
 client.on('message', message => {
     if (message.type !== 'DEFAULT') return;
     if (message.author.bot) return;
@@ -14,9 +17,6 @@ client.on('message', message => {
     let emoji = false;
     if (message.channel.type === "dm" || message.guild.me.hasPermission('USE_EXTERNAL_EMOJIS'))
         emoji = true;
-
-    let diceLIMIT = 0;
-
 
     let diceMode = 0;
     let rollcommmand = message.content;
@@ -169,10 +169,17 @@ function rollDice(dices, cliche, message, TEAMmode, TEAMscore6s, DiceMode, brack
     });
 
     for (let i = 0; i < dices; i++) {
-        if ((!TEAMmode || randomSequence[i] === 6 || DiceMode === 1) && (DiceMode !== 2 || (randomSequence[i] % 2) === 0)) //สีเทาเฉพาะถ้าเป็นทีมแล้วเลขไม่เป็น6 & mode^ไม่เป็นคู่
-            returnMsg.eachdice += DiceEmoji(randomSequence[i], emoji);
-        else
-            returnMsg.eachdice += GrayDiceEmoji(randomSequence[i], emoji);
+        if (DiceMode !== 3)
+            if ((!TEAMmode || randomSequence[i] === 6 || DiceMode === 1) && (DiceMode !== 2 || (randomSequence[i] % 2) === 0)) //สีเทาเฉพาะถ้าเป็นทีมแล้วเลขไม่เป็น6 & mode^ไม่เป็นคู่
+                returnMsg.eachdice += DiceEmoji(randomSequence[i], emoji);
+            else
+                returnMsg.eachdice += GrayDiceEmoji(randomSequence[i], emoji);
+        else {
+            if (diceLIMIT > 0) {
+                returnMsg.eachdice += DiceEmoji(randomSequence[i], emoji);
+                diceLIMIT--;
+            } else returnMsg.eachdice += GrayDiceEmoji(randomSequence[i], emoji);
+        }
 
         switch (DiceMode) {
             case 0:
