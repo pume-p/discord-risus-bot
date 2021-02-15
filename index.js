@@ -168,6 +168,7 @@ function rollDice(dices, cliche, message, TEAMmode, TEAMscore6s, DiceMode, brack
         return b - a
     });
 
+    clicheLIMIT = diceLIMIT;
     for (let i = 0; i < dices; i++) {
         if (DiceMode !== 3)
             if ((!TEAMmode || randomSequence[i] === 6 || DiceMode === 1) && (DiceMode !== 2 || (randomSequence[i] % 2) === 0)) //สีเทาเฉพาะถ้าเป็นทีมแล้วเลขไม่เป็น6 & mode^ไม่เป็นคู่
@@ -175,9 +176,10 @@ function rollDice(dices, cliche, message, TEAMmode, TEAMscore6s, DiceMode, brack
             else
                 returnMsg.eachdice += GrayDiceEmoji(randomSequence[i], emoji);
         else {
-            if (diceLIMIT > 0) {
+            if (clicheLIMIT > 0) {
                 returnMsg.eachdice += DiceEmoji(randomSequence[i], emoji);
-                diceLIMIT--;
+                clicheLIMIT--;
+                resultInt += randomSequence[i];
             } else returnMsg.eachdice += GrayDiceEmoji(randomSequence[i], emoji);
         }
 
