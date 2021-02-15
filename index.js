@@ -200,6 +200,7 @@ function rollDice(dices, cliche, message, TEAMmode, TEAMscore6s, DiceMode, brack
         }
     }
     switch (DiceMode) {
+        case 3:
         case 0:
             returnMsg.result = resultInt;
             break;
