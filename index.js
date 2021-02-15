@@ -26,6 +26,7 @@ client.on('message', message => {
             rollcommmand = rollcommmand.slice(1);
         } else {
             try {
+                console.log(message.content.slice(1).split('!')[0]);
                 diceLIMIT = parseInt(message.content.slice(1).split('!')[0]);
                 if (message.content.charAt(1) === '!') {
                     diceMode = 0;
@@ -40,7 +41,7 @@ client.on('message', message => {
         diceMode = 2;
         rollcommmand = rollcommmand.slice(1);
     }
-    
+
     if (rollcommmand.charAt(0) === '!')
         rollall(message, false, diceMode, emoji);
     else if (rollcommmand.charAt(0) === '$' && diceMode !== 2)
