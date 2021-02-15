@@ -27,8 +27,13 @@ client.on('message', message => {
         } else {
             try {
                 diceLIMIT = parseInt(message.content.slice(1).split('!')[0]);
-                diceMode = 3;
-                rollcommmand = rollcommmand.split('!')[1];
+                if (message.content.charAt(1) === '!') {
+                    diceMode = 3;
+                    rollcommmand = '!' + rollcommmand.split('!')[1];
+                } else if (message.content.charAt(1) === '$') {
+                    diceMode = 0;
+                    rollcommmand = '!' + rollcommmand.split('$')[1];
+                }
             } catch (e) {} finally {}
         }
     } else if (message.content.charAt(0) === '^') {
