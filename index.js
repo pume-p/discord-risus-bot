@@ -26,14 +26,13 @@ client.on('message', message => {
             rollcommmand = rollcommmand.slice(1);
         } else {
             try {
-                console.log(message.content.slice(1).split('!')[0]);
                 diceLIMIT = parseInt(message.content.slice(1).split('!')[0]);
-                if (message.content.charAt(1) === '!') {
+                if (message.content.charAt(2) === '!' || message.content.charAt(3) === '!') {
                     diceMode = 0;
-                    rollcommmand = '!' + rollcommmand.split('!')[1];
-                } else if (message.content.charAt(1) === '$') {
+                    rollcommmand = '!';
+                } else if (message.content.charAt(2) === '$' || message.content.charAt(3) === '$') {
                     diceMode = 0;
-                    rollcommmand = '$' + rollcommmand.split('$')[1];
+                    rollcommmand = '$';
                 }
             } catch (e) {} finally {}
         }
