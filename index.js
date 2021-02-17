@@ -39,7 +39,7 @@ client.on('message', message => {
     } else if (message.content.charAt(0) === '^') {
         if (message.content.charAt(1) === '!') {
             diceMode = 2;
-            rollcommmand = rollcommmand.slice(1);
+            rollcommmand = '!';
         } else {
             try {
                 diceLIMIT = parseInt(message.content.slice(1).split('!')[0]);
@@ -47,9 +47,6 @@ client.on('message', message => {
                 rollcommmand = '!';
             } catch (e) {} finally {}
         }
-
-        diceMode = 2;
-        rollcommmand = rollcommmand.slice(1);
     }
 
     if (rollcommmand.charAt(0) === '!')
