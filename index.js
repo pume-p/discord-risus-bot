@@ -140,7 +140,7 @@ function rollall(message, TEAMmode, DiceMode, emoji, diceLIMIT) {
     console.log(`${message.author.username}${guild}\n${message.content}\n\--`);
 }
 
-function rollDice(dices, cliche, message, TEAMmode, TEAMscore6s, DiceMode, bracket2, emoji) {
+function rollDice(dices, cliche, message, TEAMmode, TEAMscore6s, DiceMode, bracket2, emoji, diceLIMIT) {
     if (isNaN(dices)) return;
 
     if (DiceMode !== 2) {
