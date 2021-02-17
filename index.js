@@ -241,9 +241,9 @@ function rollDice(dices, cliche, message, TEAMmode, TEAMscore6s, DiceMode, brack
                 returnMsg.result = ' fail';
         case 4:
             if (resultInt <= diceLIMIT)
-                returnMsg.result = '** ***Success!*';
+                returnMsg.result = `** ${resultInt} ≤ ${diceLIMIT} : ***Success!*`;
             else
-                returnMsg.result = ' fail';
+                returnMsg.result = ` ${resultInt} ≤ ${diceLIMIT} : fail`;
     }
     return returnMsg;
 }
