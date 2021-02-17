@@ -8,8 +8,6 @@ client.once('ready', () => {
 });
 //! this code was orignally made for a single large server and is very very very old code 
 
-var diceLIMIT = 0;
-
 client.on('message', message => {
     if (message.type !== 'DEFAULT') return;
     if (message.author.bot) return;
@@ -18,6 +16,7 @@ client.on('message', message => {
     if (message.channel.type === "dm" || message.guild.me.hasPermission('USE_EXTERNAL_EMOJIS'))
         emoji = true;
 
+    let diceLIMIT = 0;
     let diceMode = 0;
     let rollcommmand = message.content;
     if (message.content.charAt(0) === '*') {
@@ -50,9 +49,9 @@ client.on('message', message => {
     }
 
     if (rollcommmand.charAt(0) === '!')
-        rollall(message, false, diceMode, emoji);
+        rollall(message, false, diceMode, emoji, diceLIMIT);
     else if (rollcommmand.charAt(0) === '$' && diceMode !== 2)
-        rollall(message, true, diceMode, emoji);
+        rollall(message, true, diceMode, emoji, diceLIMIT);
     else if (message.content.startsWith('%')) {
         let total = 0,
             s = message.content.match(/[+\-]*(\.\d+|\d+(\.\d+)?)/g) || [];
@@ -65,7 +64,7 @@ client.on('message', message => {
 
 //DICE CONTROL
 
-function rollall(message, TEAMmode, DiceMode, emoji) {
+function rollall(message, TEAMmode, DiceMode, emoji, diceLIMIT) {
     let cliches = message.content.split('\n');
 
     if (TEAMmode)
@@ -115,7 +114,7 @@ function rollall(message, TEAMmode, DiceMode, emoji) {
                 dices = parseInt(cliche.split(bracket)[1].split(bracket2)[0].split('/')[1].replace(/[^0-9-]/g, '')); //.split('+')[0].split('-')[0]
             else
                 dices = parseInt(cliche.split(bracket)[1].split(bracket2)[0].split('/')[0].replace(/[^0-9-]/g, '')); //.split('+')[0].split('-')[0]
-            returnMsg = rollDice(dices, cliche, message, TEAMmode, TEAMscore6s, DiceMode, bracket2, emoji);
+            returnMsg = rollDice(dices, cliche, message, TEAMmode, TEAMscore6s, DiceMode, bracket2, emoji, diceLIMIT);
             TEAMscore6s = returnMsg.TEAMscore6s;
             if (emoji)
                 sendMsgUnder2000(`> **${cliche}: ${returnMsg.eachdice} :${returnMsg.result}**`, false, message); //.split(bracket2)[0]}${bracket2
@@ -239,9 +238,10 @@ function rollDice(dices, cliche, message, TEAMmode, TEAMscore6s, DiceMode, brack
                 returnMsg.result = '** ***Success!*';
             else
                 returnMsg.result = ' fail';
+            break;
         case 4:
             if (resultInt <= diceLIMIT)
-                returnMsg.result = `** ${resultInt} ≤ ${diceLIMIT} : ***Success!*`;
+                returnMsg.result = ` ${resultInt} ≤ ${diceLIMIT} :** ***Success!*`;
             else
                 returnMsg.result = ` ${resultInt} ≤ ${diceLIMIT} : fail`;
     }
