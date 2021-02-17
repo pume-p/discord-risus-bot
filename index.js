@@ -37,6 +37,17 @@ client.on('message', message => {
             } catch (e) {} finally {}
         }
     } else if (message.content.charAt(0) === '^') {
+        if (message.content.charAt(1) === '!') {
+            diceMode = 2;
+            rollcommmand = rollcommmand.slice(1);
+        } else {
+            try {
+                diceLIMIT = parseInt(message.content.slice(1).split('!')[0]);
+                diceMode = 4;
+                rollcommmand = '!';
+            } catch (e) {} finally {}
+        }
+
         diceMode = 2;
         rollcommmand = rollcommmand.slice(1);
     }
@@ -200,6 +211,7 @@ function rollDice(dices, cliche, message, TEAMmode, TEAMscore6s, DiceMode, brack
         }
 
         switch (DiceMode) {
+            case 4:
             case 0:
                 if (TEAMmode)
                     if (randomSequence[i] === 6) returnMsg.TEAMscore6s++;
@@ -227,6 +239,11 @@ function rollDice(dices, cliche, message, TEAMmode, TEAMscore6s, DiceMode, brack
             break;
         case 2:
             if (resultInt === 0)
+                returnMsg.result = '** ***Success!*';
+            else
+                returnMsg.result = ' fail';
+        case 4:
+            if (resultInt <= diceLIMIT)
                 returnMsg.result = '** ***Success!*';
             else
                 returnMsg.result = ' fail';
