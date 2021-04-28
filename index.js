@@ -136,7 +136,7 @@ function rollall(message, TEAMmode, DiceMode, emoji, diceLIMIT) {
             TEAMscore = `> ***TEAM= ${DiceEmoji(TEAMscore6s, guil_id)}***`;
 
     OUTPUT += TEAMscore + '\n';
-    ch.channel.send(OUTPUT);
+    message.channel.send(OUTPUT);
     console.log(OUTPUT);
     //sendMsgUnder2000(TEAMscore, true, message);
 
