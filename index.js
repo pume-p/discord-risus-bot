@@ -172,7 +172,7 @@ function rollDice(dices, cliche, message, TEAMmode, TEAMscore6s, DiceMode, brack
 
     if (dices > 30) {
         returnMsg.result = 'ERROR30';
-        return;
+        return returnMsg;
     }
 
     let randomSequence = new Array(dices);
