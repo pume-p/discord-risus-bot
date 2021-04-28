@@ -6,7 +6,6 @@ client.once('ready', () => {
     console.log('Ready!\n---');
     client.user.setActivity('risusiverse-thai.com/risus-bot');
 });
-//! this code was orignally made for a single large server and is very very very old code 
 
 client.on('message', message => {
     if (message.type !== 'DEFAULT') return;
@@ -65,6 +64,8 @@ client.on('message', message => {
 //DICE CONTROL
 
 function rollall(message, TEAMmode, DiceMode, emoji, diceLIMIT) {
+    let OUTPUT = '';
+
     let cliches = message.content.split('\n');
 
     if (TEAMmode)
@@ -115,19 +116,17 @@ function rollall(message, TEAMmode, DiceMode, emoji, diceLIMIT) {
             else
                 dices = parseInt(cliche.split(bracket)[1].split(bracket2)[0].split('/')[0].replace(/[^0-9-]/g, '')); //.split('+')[0].split('-')[0]
             returnMsg = rollDice(dices, cliche, message, TEAMmode, TEAMscore6s, DiceMode, bracket2, emoji, diceLIMIT);
+            if(returnMsg.result === 'ERROR30') OUTPUT += sendMsgUnder2000(`> *${cliche} - Could not roll more than 30 dices*`, OUTPUT);
             TEAMscore6s = returnMsg.TEAMscore6s;
             if (emoji)
-                sendMsgUnder2000(`> **${cliche}: ${returnMsg.eachdice} :${returnMsg.result}**`, false, message); //.split(bracket2)[0]}${bracket2
+                OUTPUT += sendMsgUnder2000(`> **${cliche}: ${returnMsg.eachdice} :${returnMsg.result}**`, OUTPUT);//false, message); //.split(bracket2)[0]}${bracket2
             else
-                sendMsgUnder2000(`> **${cliche}:  ${returnMsg.eachdice} :${returnMsg.result}**`, false, message); //.split(bracket2)[0]}${bracket2
+                OUTPUT += sendMsgUnder2000(`> **${cliche}:  ${returnMsg.eachdice} :${returnMsg.result}**`, OUTPUT);//false, message); //.split(bracket2)[0]}${bracket2
             rolled++;
         } catch (e) {} finally {}
     });
-    if (rolled === 0 && allText === '') return;
-    else if (rolled === 0) {
-        sendMsgUnder2000('', true, message);
-        return;
-    }
+    if (rolled === 0 /*&& allText === ''*/ ) return;
+    //else if (rolled === 0) return;
 
     let TEAMscore = '';
     if (TEAMmode && rolled > 1)
@@ -135,7 +134,11 @@ function rollall(message, TEAMmode, DiceMode, emoji, diceLIMIT) {
             TEAMscore = `> ***TEAM= ${TEAMscore6s}\\* =${TEAMscore6s * 6}***`;
         else
             TEAMscore = `> ***TEAM= ${DiceEmoji(TEAMscore6s, guil_id)}***`;
-    sendMsgUnder2000(TEAMscore, true, message);
+
+    OUTPUT += TEAMscore + '\n';
+    ch.channel.send(OUTPUT);
+    console.log(OUTPUT);
+    //sendMsgUnder2000(TEAMscore, true, message);
 
     console.log(`${message.author.username}${guild}\n${message.content}\n\--`);
 }
@@ -156,10 +159,7 @@ function rollDice(dices, cliche, message, TEAMmode, TEAMscore6s, DiceMode, brack
     else if (cliche.split(bracket2)[1].indexOf('-') > -1)
         dices -= parseInt(cliche.split('-')[1].replace(/[^0-9-]/g, ''));*/
 
-    if (dices > 30) {
-        sendMsgUnder2000(`> *${cliche} - Could not roll more than 30 dices*`, false, message);
-        return;
-    }
+    
 
     let highestDnum = 0;
 
@@ -168,6 +168,11 @@ function rollDice(dices, cliche, message, TEAMmode, TEAMscore6s, DiceMode, brack
         eachdice: '',
         result: '',
         TEAMscore6s: TEAMscore6s,
+    }
+
+    if (dices > 30) {
+        returnMsg.result = 'ERROR30';
+        return;
     }
 
     let randomSequence = new Array(dices);
@@ -248,9 +253,15 @@ function rollDice(dices, cliche, message, TEAMmode, TEAMscore6s, DiceMode, brack
     return returnMsg;
 }
 
-var allText = '';
+//var allText = '';
 
-function sendMsgUnder2000(text, final, ch) {
+function sendMsgUnder2000(text, overalltext) { //final, ch) {
+    const newtext =  text + '\n' + overalltext;
+    if (newtext.length > 1900)
+        return overalltext;
+    else
+        return newtext;
+    /*
     if (allText.length + text.length >= 2000 || final) {
         if (final) {
             if (allText.length + text.length >= 2000) {
@@ -264,6 +275,7 @@ function sendMsgUnder2000(text, final, ch) {
         allText = '';
     }
     if (!final) allText += text + '\n';
+    */
 }
 
 function DiceEmoji(num, emoji) {
