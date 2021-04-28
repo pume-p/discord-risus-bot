@@ -116,7 +116,7 @@ function rollall(message, TEAMmode, DiceMode, emoji, diceLIMIT) {
             else
                 dices = parseInt(cliche.split(bracket)[1].split(bracket2)[0].split('/')[0].replace(/[^0-9-]/g, '')); //.split('+')[0].split('-')[0]
             returnMsg = rollDice(dices, cliche, message, TEAMmode, TEAMscore6s, DiceMode, bracket2, emoji, diceLIMIT);
-            if (returnMsg.result === 'ERROR30') OUTPUT += sendMsgUnder2000(`> *${cliche} - Could not roll more than 30 dices*`, OUTPUT);
+            if (returnMsg.result === 'ERROR30') {OUTPUT += sendMsgUnder2000(`> *${cliche} - Could not roll more than 30 dices*`, OUTPUT); continue;}
             TEAMscore6s = returnMsg.TEAMscore6s;
             if (emoji)
                 OUTPUT += sendMsgUnder2000(`> **${cliche}: ${returnMsg.eachdice} :${returnMsg.result}**`, OUTPUT); //false, message); //.split(bracket2)[0]}${bracket2
