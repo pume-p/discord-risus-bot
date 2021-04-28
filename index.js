@@ -110,7 +110,7 @@ function rollall(message, TEAMmode, DiceMode, emoji, diceLIMIT) {
                 else if (cliche.indexOf('}') > -1) bracket2 = '}';
             }
 
-            if (DiceMode === 2 && cliche.split(bracket)[1].split(bracket2)[0].indexOf('/') > -1)
+            if ((DiceMode === 4 || DiceMode === 2) && cliche.split(bracket)[1].split(bracket2)[0].indexOf('/') > -1)
                 dices = parseInt(cliche.split(bracket)[1].split(bracket2)[0].split('/')[1].replace(/[^0-9-]/g, '')); //.split('+')[0].split('-')[0]
             else
                 dices = parseInt(cliche.split(bracket)[1].split(bracket2)[0].split('/')[0].replace(/[^0-9-]/g, '')); //.split('+')[0].split('-')[0]
