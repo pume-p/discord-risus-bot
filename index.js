@@ -125,7 +125,7 @@ function rollall(message, TEAMmode, DiceMode, emoji, diceLIMIT) {
             rolled++;
         } catch (e) {} finally {}
     });
-    if (rolled === 0 /*&& allText === ''*/ ) return;
+    if (/*rolled === 0 && allText*/OUTPUT === '' ) return;
     //else if (rolled === 0) return;
 
     let TEAMscore = '';
