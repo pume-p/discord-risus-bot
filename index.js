@@ -18,33 +18,52 @@ client.on('message', message => {
     let diceLIMIT = 0;
     let diceMode = 0;
     let rollcommmand = message.content;
-    if (message.content.charAt(0) === '*') {
-        if (message.content.charAt(1) === '!' || rollcommmand.charAt(1) === '$') {
-            diceMode = 1;
-            rollcommmand = rollcommmand.slice(1);
-        } else {
-            try {
-                diceLIMIT = parseInt(message.content.slice(1).split('!')[0]);
-                if (message.content.charAt(2) === '!' || message.content.charAt(3) === '!') {
-                    diceMode = 3;
-                    rollcommmand = '!';
-                } else if (message.content.charAt(2) === '$' || message.content.charAt(3) === '$') {
-                    diceMode = 0;
-                    rollcommmand = '$';
-                }
-            } catch (e) {} finally {}
-        }
-    } else if (message.content.charAt(0) === '^') {
-        if (message.content.charAt(1) === '!') {
-            diceMode = 2;
-            rollcommmand = '!';
-        } else {
-            try {
-                diceLIMIT = parseInt(message.content.slice(1).split('!')[0]);
-                diceMode = 4;
+
+    switch (message.content.charAt(0)) {
+        case '*':
+            if (message.content.charAt(1) === '!' || rollcommmand.charAt(1) === '$') {
+                diceMode = 1;
+                rollcommmand = rollcommmand.slice(1);
+            } else {
+                try {
+                    diceLIMIT = parseInt(message.content.slice(1).split('!')[0]);
+                    if (message.content.charAt(2) === '!' || message.content.charAt(3) === '!') {
+                        diceMode = 3;
+                        rollcommmand = '!';
+                    } else if (message.content.charAt(2) === '$' || message.content.charAt(3) === '$') {
+                        return;
+                        //diceMode = 0;
+                        //rollcommmand = '$';
+                    }
+                } catch (e) {} finally {}
+            }
+            break;
+        case '^':
+            if (message.content.charAt(1) === '!') {
+                diceMode = 2;
                 rollcommmand = '!';
-            } catch (e) {} finally {}
-        }
+            } else {
+                try {
+                    diceLIMIT = parseInt(message.content.slice(1).split('!')[0]);
+                    diceMode = 4;
+                    rollcommmand = '!';
+                } catch (e) {} finally {}
+            }
+            break;
+        case 'a':
+        case 'A':
+            if (message.content.charAt(1) === '!' || rollcommmand.charAt(1) === '$') {
+                diceMode = 5;
+                rollcommmand = rollcommmand.slice(1);
+            }
+            break;
+        case 'd':
+        case 'D':
+            if (message.content.charAt(1) === '!' || rollcommmand.charAt(1) === '$') {
+                diceMode = 6;
+                rollcommmand = rollcommmand.slice(1);
+            }
+            break;
     }
 
     if (rollcommmand.charAt(0) === '!')
@@ -59,7 +78,7 @@ client.on('message', message => {
         }
         message.channel.send(total);
     }
-})
+});
 
 //DICE CONTROL
 
@@ -116,7 +135,10 @@ function rollall(message, TEAMmode, DiceMode, emoji, diceLIMIT) {
             else
                 dices = parseInt(cliche.split(bracket)[1].split(bracket2)[0].split('/')[0].replace(/[^0-9-]/g, '')); //.split('+')[0].split('-')[0]
             returnMsg = rollDice(dices, cliche, message, TEAMmode, TEAMscore6s, DiceMode, bracket2, emoji, diceLIMIT);
-            if (returnMsg.result === 'ERROR30') {OUTPUT += sendMsgUnder2000(`> *${cliche} - Could not roll more than 30 dices*`, OUTPUT); return;}
+            if (returnMsg.result === 'ERROR30') {
+                OUTPUT += sendMsgUnder2000(`> *${cliche} - Could not roll more than 30 dices*`, OUTPUT);
+                return;
+            }
             TEAMscore6s = returnMsg.TEAMscore6s;
             if (emoji)
                 OUTPUT += sendMsgUnder2000(`> **${cliche}: ${returnMsg.eachdice} :${returnMsg.result}**`, OUTPUT); //false, message); //.split(bracket2)[0]}${bracket2
@@ -125,7 +147,7 @@ function rollall(message, TEAMmode, DiceMode, emoji, diceLIMIT) {
             rolled++;
         } catch (e) {} finally {}
     });
-    if (/*rolled === 0 && allText*/OUTPUT === '' ) return;
+    if ( /*rolled === 0 && allText*/ OUTPUT === '') return;
     //else if (rolled === 0) return;
 
     let TEAMscore = '';
@@ -170,39 +192,68 @@ function rollDice(dices, cliche, message, TEAMmode, TEAMscore6s, DiceMode, brack
         TEAMscore6s: TEAMscore6s,
     }
 
+    switch (DiceMode) {
+        case 5:
+        case 6:
+            diceLIMIT = dices;
+            dices *= 2;
+            break;
+    }
+
     if (dices > 30) {
         returnMsg.result = 'ERROR30';
         return returnMsg;
     }
 
+    let D56FLIP = false;
+
     let randomSequence = new Array(dices);
-    for (let i = 0; i < dices; i++) {
+    for (let i = 0; i < dices; i++)
         randomSequence[i] = Math.floor(Math.random() * 6) + 1;
 
-        if (DiceMode === 1 && resultInt < randomSequence[i]) {
-            resultInt = randomSequence[i];
-            highestDnum = i;
-        }
+    switch (DiceMode) {
+        case 3:
+            randomSequence.sort(function (a, b) {
+                return b - a
+            })
+            break;
+        case 5:
+        case 6:
+            let FirstSUM = 0;
+            for (let i = 0; i < diceLIMIT; i++) {
+                FirstSUM += randomSequence[i];
+            }
+            let SecondSUM = Math.abs(randomSequence.reduce((a, b) => a + b, 0) - FirstSUM);
+            switch (DiceMode) {
+                case 5:
+                    if (!(FirstSUM > SecondSUM))
+                        D56FLIP = true;
+                    break;
+                case 6:
+                    if (!(FirstSUM < SecondSUM))
+                        D56FLIP = true;
+                    break;
+            }
+            break;
     }
-    if (DiceMode === 3) randomSequence.sort(function (a, b) {
-        return b - a
-    });
 
     clicheLIMIT = diceLIMIT;
     for (let i = 0; i < dices; i++) {
         switch (DiceMode) {
+            case 6:
+            case 5:
+                clicheLIMIT--;
+                if (clicheLIMIT === -1)
+                    returnMsg.eachdice += ' ';
+                if ((clicheLIMIT > -1 && D56FLIP) || (clicheLIMIT <= -1 && !D56FLIP))
+                    returnMsg.eachdice += GrayDiceEmoji(randomSequence[i], emoji);
+                else if (DiceMode === 5) returnMsg.eachdice += GreenDiceEmoji(randomSequence[i], emoji);
+                else returnMsg.eachdice += RedDiceEmoji(randomSequence[i], emoji);
+                break;
             case 3:
                 if (clicheLIMIT > 0) {
                     returnMsg.eachdice += DiceEmoji(randomSequence[i], emoji);
-                    clicheLIMIT--;
-                    resultInt += randomSequence[i];
                 } else returnMsg.eachdice += GrayDiceEmoji(randomSequence[i], emoji);
-                break;
-            case 1:
-                if (i === highestDnum || true)
-                    returnMsg.eachdice += DiceEmoji(randomSequence[i], emoji);
-                else
-                    returnMsg.eachdice += GrayDiceEmoji(randomSequence[i], emoji);
                 break;
             default:
                 if ((!TEAMmode || randomSequence[i] === 6 || DiceMode === 1) && (DiceMode !== 2 || (randomSequence[i] % 2) === 0)) //สีเทาเฉพาะถ้าเป็นทีมแล้วเลขไม่เป็น6 & mode^ไม่เป็นคู่
@@ -212,6 +263,21 @@ function rollDice(dices, cliche, message, TEAMmode, TEAMscore6s, DiceMode, brack
         }
 
         switch (DiceMode) {
+            case 6:
+            case 5:
+                if (clicheLIMIT > -1 && D56FLIP) break;
+                if (clicheLIMIT <= -1 && !D56FLIP) break;
+                if (TEAMmode)
+                    if (randomSequence[i] === 6) returnMsg.TEAMscore6s++;
+                    else randomSequence[i] = 0;
+                resultInt += randomSequence[i];
+                break;
+            case 3:
+                if (clicheLIMIT > 0) {
+                    clicheLIMIT--;
+                    resultInt += randomSequence[i];
+                }
+                break;
             case 4:
             case 0:
                 if (TEAMmode)
@@ -229,6 +295,8 @@ function rollDice(dices, cliche, message, TEAMmode, TEAMscore6s, DiceMode, brack
         }
     }
     switch (DiceMode) {
+        case 6:
+        case 5:
         case 3:
         case 0:
             returnMsg.result = resultInt;
@@ -278,6 +346,23 @@ function sendMsgUnder2000(text, overalltext) { //final, ch) {
     */
 }
 
+function NumEmoji(num) {
+    switch (num) {
+        case 2:
+            return '2️⃣ ';
+        case 3:
+            return '3️⃣ ';
+        case 4:
+            return '4️⃣ ';
+        case 5:
+            return '5️⃣ ';
+        case 6:
+            return '6️⃣ ';
+        default:
+            return '1️⃣ ';
+    }
+}
+
 function DiceEmoji(num, emoji) {
     if (!emoji) return NumEmoji(num);
     let id = '';
@@ -304,7 +389,7 @@ function DiceEmoji(num, emoji) {
             id = '726851299152232515';
             break;
     }
-    return `<:d${num}:${id}>`;
+    return `<:_:${id}>`;
 }
 
 function GrayDiceEmoji(num, emoji) {
@@ -312,40 +397,75 @@ function GrayDiceEmoji(num, emoji) {
     let id = '';
     switch (num) {
         case 2:
-            id = '760313662707335178';
+            id = '850077840661020683';
             break;
         case 3:
-            id = '760313684815380480';
+            id = '850077840770990081';
             break;
         case 4:
-            id = '760313708424855562';
+            id = '850077840628252733';
             break;
         case 5:
-            id = '760313730688352306';
+            id = '850077841218732052';
             break;
         case 6:
-            id = '760313749763915808';
+            id = '850077841022648320';
             break;
         default:
-            id = '760313638807404566';
+            id = '850077841096835072';
             break;
     }
-    return `<:g${num}:${id}>`;
+    return `<:_:${id}>`;
 }
 
-function NumEmoji(num) {
+function GreenDiceEmoji(num, emoji) {
+    if (!emoji) return NumEmoji(num);
+    let id = '';
     switch (num) {
-        case 2:
-            return '2️⃣ ';
-        case 3:
-            return '3️⃣ ';
-        case 4:
-            return '4️⃣ ';
-        case 5:
-            return '5️⃣ ';
         case 6:
-            return '6️⃣ ';
+            id = '850076808715698220';
+            break;
+        case 5:
+            id = '850077497437192212';
+            break;
+        case 4:
+            id = '850077497147785246';
+            break;
+        case 3:
+            id = '850077497337053284';
+            break;
+        case 2:
+            id = '850077496933220362';
+            break;
         default:
-            return '1️⃣ ';
+            id = '850077497169281024';
+            break;
     }
+    return `<:_:${id}>`;
+}
+
+function RedDiceEmoji(num, emoji) {
+    if (!emoji) return NumEmoji(num);
+    let id = '';
+    switch (num) {
+        case 6:
+            id = '850074539600904202';
+            break;
+        case 5:
+            id = '850075020129861692';
+            break;
+        case 4:
+            id = '850075011996975124';
+            break;
+        case 3:
+            id = '850075001096241173';
+            break;
+        case 2:
+            id = '850074993114218556';
+            break;
+        default:
+            id = '850074985326575616';
+            break;
+    }
+    return `<:_:${id}>`;
 }
