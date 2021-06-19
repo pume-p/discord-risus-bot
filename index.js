@@ -193,7 +193,12 @@ function rollall(message, TEAMmode, DiceMode, emoji, diceLIMIT) {
 
 
     OUTPUT += TEAMscore + '\n';
-    message.channel.send(OUTPUT);
+
+    try {
+        message.channel.send(OUTPUT);
+    } catch (e) {
+        console.log(e);
+    } finally {}
     console.log(OUTPUT);
     //sendMsgUnder2000(TEAMscore, true, message);
 
