@@ -19,3 +19,10 @@
 #
 #
 #
+curl -n -X DELETE https://api.heroku.com/apps/discord-risus-bot/dynos \n -H "Content-Type: application/json" \n -H "Accept: application/vnd.heroku+json; version=3" \n -H "Authorization: Bearer ${process.env.heroku_token}"
+
+
+#curl -X DELETE "https://api.heroku.com/apps/discord-risus-bot/dynos" \
+#  -H "Content-Type: application/json" \
+#  -H "Accept: application/vnd.heroku+json; version=3" \
+#  -H "Authorization: Bearer ${process.env.heroku_token}"
