@@ -26,4 +26,4 @@ curl -X DELETE "https://api.heroku.com/apps/discord-risus-bot/dynos" \
 #  --user "${process.env.heroku_id}:${process.env.heroku_token}" \
   -H "Content-Type: application/json" \
   -H "Accept: application/vnd.heroku+json; version=3" \
-  -H "Authorization: Bearer ${process.env.heroku_token}"
+  -H "Authorization: Bearer #{ENV["heroku_token"]}"
