@@ -1,5 +1,4 @@
 const Discord = require('discord.js');
-const Heroku = require('heroku-client');
 const client = new Discord.Client();
 client.login(process.env.token_tester);
 
