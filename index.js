@@ -212,7 +212,7 @@ function rollall(message, TEAMmode, DiceMode, emoji, diceLIMIT) {
     if (rolled >= 1)
         switch (DiceMode) {
             case 9:
-                OUTPUT = `***<${diceLIMIT}>***\n` + OUTPUT;
+                OUTPUT = `> ***<${diceLIMIT}>***\n` + OUTPUT;
                 break;
         }
 
