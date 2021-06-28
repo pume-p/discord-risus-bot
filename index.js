@@ -27,14 +27,8 @@ client.on('message', message => {
             } else {
                 try {
                     diceLIMIT = parseInt(message.content.slice(1).split('!')[0]);
-                    if (message.content.charAt(2) === '!' || message.content.charAt(3) === '!') {
-                        diceMode = 3;
-                        rollcommmand = '!';
-                    } else if (message.content.charAt(2) === '$' || message.content.charAt(3) === '$') {
-                        return;
-                        //diceMode = 0;
-                        //rollcommmand = '$';
-                    }
+                    diceMode = 3;
+                    rollcommmand = '!';
                 } catch (e) {} finally {}
             }
             break;
@@ -80,6 +74,18 @@ client.on('message', message => {
             } else if (rollcommmand.charAt(1) === '$') {
                 diceMode = 8;
                 rollcommmand = rollcommmand.slice(1);
+            }
+            break;
+        case 'r':
+        case 'R':
+            if (message.content.charAt(1) === '$') return;
+            if (message.content.charAt(1) === '!') return;
+            else {
+                try {
+                    diceLIMIT = parseInt(message.content.slice(1).split('!')[0]);
+                    diceMode = 9;
+                    rollcommmand = '!';
+                } catch (e) {} finally {}
             }
             break;
     }
@@ -166,10 +172,23 @@ function rollall(message, TEAMmode, DiceMode, emoji, diceLIMIT) {
                     TEAMscore6s += returnMsg.TEAMscore6s;
                     break;
             }
-            if (emoji)
-                OUTPUT += sendMsgUnder2000(`> **${cliche}: ${returnMsg.eachdice} :${returnMsg.result}**`, OUTPUT); //false, message); //.split(bracket2)[0]}${bracket2
-            else
-                OUTPUT += sendMsgUnder2000(`> **${cliche}:  ${returnMsg.eachdice} :${returnMsg.result}**`, OUTPUT); //false, message); //.split(bracket2)[0]}${bracket2
+            switch (DiceMode) {
+                case 9:
+                    let text9;console.log(cliche.replace(/\W/g, ''));
+                    if (dices > 1 || cliche.replace(/\W/g, '').replace(/\d/g,'') != '')
+                        text9 = `> **${cliche}: ${returnMsg.eachdice}`;
+                    else
+                        text9 = `> **${returnMsg.eachdice}`;
+                    if (returnMsg.result !== '')
+                        text9 += ` :${returnMsg.result}**`;
+                    else
+                        text9 += `**`;
+                    OUTPUT += sendMsgUnder2000(text9, OUTPUT);
+                    break;
+                default:
+                    OUTPUT += sendMsgUnder2000(`> **${cliche}: ${returnMsg.eachdice} :${returnMsg.result}**`, OUTPUT); //false, message); //.split(bracket2)[0]}${bracket2
+                    break;
+            }
             rolled++;
         } catch (e) {} finally {}
     });
@@ -190,7 +209,12 @@ function rollall(message, TEAMmode, DiceMode, emoji, diceLIMIT) {
                 TEAMscore = `> ***TEAM=  ${TEAMscore6s}  ${Tick(emoji)}***`;
                 break;
         }
-
+    if (rolled >= 1)
+        switch (DiceMode) {
+            case 9:
+                OUTPUT = `***<${diceLIMIT}>***\n` + OUTPUT;
+                break;
+        }
 
     OUTPUT += TEAMscore + '\n';
 
@@ -223,7 +247,7 @@ function rollDice(dices, cliche, message, TEAMmode, TEAMscore6s, DiceMode, brack
 
 
 
-    let highestDnum = 0;
+    let D = 6;
 
     let resultInt = 0;
     let returnMsg = {
@@ -242,6 +266,9 @@ function rollDice(dices, cliche, message, TEAMmode, TEAMscore6s, DiceMode, brack
             diceLIMIT = dices;
             dices *= 2;
             break;
+        case 9:
+            D = diceLIMIT;
+            break;
     }
 
     if (dices > 30) {
@@ -253,7 +280,7 @@ function rollDice(dices, cliche, message, TEAMmode, TEAMscore6s, DiceMode, brack
 
     let randomSequence = new Array(dices);
     for (let i = 0; i < dices; i++) {
-        randomSequence[i] = Math.floor(Math.random() * 6) + 1;
+        randomSequence[i] = Math.floor(Math.random() * D) + 1;
         switch (DiceMode) {
             case 7:
                 if (randomSequence[i] === 6)
@@ -290,6 +317,9 @@ function rollDice(dices, cliche, message, TEAMmode, TEAMscore6s, DiceMode, brack
     clicheLIMIT = diceLIMIT;
     for (let i = 0; i < dices; i++) {
         switch (DiceMode) {
+            case 9:
+                returnMsg.eachdice += `[${randomSequence[i]}]`;
+                break;
             case 6:
             case 5: //ทอยสองกลุ่ม
                 clicheLIMIT--;
@@ -348,12 +378,6 @@ function rollDice(dices, cliche, message, TEAMmode, TEAMscore6s, DiceMode, brack
                     resultInt += randomSequence[i];
                 }
                 break;
-            case 4:
-            case 0:
-                if (TEAMmode)
-                    if (randomSequence[i] !== 6) randomSequence[i] = 0;
-                resultInt += randomSequence[i];
-                break;
             case 1:
                 if (resultInt < randomSequence[i])
                     resultInt = randomSequence[i];
@@ -371,6 +395,11 @@ function rollDice(dices, cliche, message, TEAMmode, TEAMscore6s, DiceMode, brack
                 }
                 if ((randomSequence[i] % 2) === 0)
                     resultInt++;
+                break;
+            default:
+                if (TEAMmode)
+                    if (randomSequence[i] !== 6) randomSequence[i] = 0;
+                resultInt += randomSequence[i];
                 break;
         }
     }
@@ -397,6 +426,10 @@ function rollDice(dices, cliche, message, TEAMmode, TEAMscore6s, DiceMode, brack
         case 8:
             returnMsg.result = `  ${resultInt}  ${Tick(emoji)}`;
             returnMsg.TEAMscore6s = resultInt;
+            break;
+        case 9:
+            if (dices > 1)
+                returnMsg.result = resultInt;
             break;
         default:
             returnMsg.result = resultInt;
