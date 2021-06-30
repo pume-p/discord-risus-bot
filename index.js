@@ -9,7 +9,7 @@ client.once('ready', () => {
 
 client.on('message', message => {
     if (message.type !== 'DEFAULT') return;
-    if (message.author.bot && message.author.id !== '850047136091340881' && message.author.id !== '729280830823727187') return;
+    if (message.author.bot && message.author.id !== '850047136091340881') return;
     
     let emoji = false;
     if (message.channel.type === "dm" || message.guild.me.hasPermission('USE_EXTERNAL_EMOJIS'))
