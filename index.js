@@ -507,7 +507,7 @@ function DiceEmoji(num, emoji) {
             id = '854776761618792488';
             break;
     }
-    return `<:_:${id}>`;
+    return `<:${num}:${id}>`;
 }
 
 function GrayDiceEmoji(num, emoji) {
@@ -533,7 +533,7 @@ function GrayDiceEmoji(num, emoji) {
             id = '850077841096835072';
             break;
     }
-    return `<:_:${id}>`;
+    return `<:${num}:${id}>`;
 }
 
 function GreenDiceEmoji(num, emoji) {
@@ -559,7 +559,7 @@ function GreenDiceEmoji(num, emoji) {
             id = '850077497169281024';
             break;
     }
-    return `<:_:${id}>`;
+    return `<:${num}:${id}>`;
 }
 
 function RedDiceEmoji(num, emoji) {
@@ -585,10 +585,10 @@ function RedDiceEmoji(num, emoji) {
             id = '850074985326575616';
             break;
     }
-    return `<:_:${id}>`;
+    return `<:${num}:${id}>`;
 }
 
 function Tick(emoji) {
     if (!emoji) return '✓';
-    return `<:_:853702038353739837>`;
+    return `<:S:853702038353739837>`;
 }
